@@ -23,7 +23,7 @@ yellow='\033[0;33m'
 red='\033[0;31m'
 nocol='\033[0m'
 # Modify the following variable if you want to build
-export CROSS_COMPILE="/home/chijure/arm-linux-androideabi-4.6/bin/arm-linux-androideabi-"
+export CROSS_COMPILE="/home/chijure/arm-cortex_a7-linux-gnueabihf-linaro_4.9.4-2015.06/bin/arm-eabi-"
 
 compile_kernel ()
 {
