@@ -14,6 +14,7 @@ obj-y   += usb20/
 obj-y   += usb11/
 obj-y   += mmc-host/
 obj-y   += sound/
+obj-$(CONFIG_THUNDERSONIC_ENGINE_GPL) += thundersonic_engine/
 obj-y   += dum-char/
 ifneq ($(MTK_EMMC_SUPPORT),yes)
 obj-y   += nand/

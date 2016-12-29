@@ -450,6 +450,13 @@ config MTK_SIM2 # MT6516_SIM2
 config MTK_SOUND # SOUND MT6573 SOUND_MT6516
         bool "MediaTek Sound Driver"
 
+# ThunderSonic Engine
+config THUNDERSONIC_ENGINE_GPL
+	tristate "Sound Control Module"
+	default n
+	help
+	  Sound Control for MTK Audio driver
+
 # Touch Panel
 config MTK_TOUCHPANEL # TOUCHSCREEN_MT6516 TOUCHSCREEN_MT6573
         tristate "MediaTek Touch Panel Driver"
