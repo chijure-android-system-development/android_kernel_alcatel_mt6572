@@ -61,6 +61,7 @@ kernel/Module.symvers
 #
 kernel/include/config
 kernel/include/linux/version.h
+kernel/include/linux/autoconf.h
 kernel/include/generated
 kernel/arch/*/include/generated
 kernel/arch/arm/mach-msm/smd_rpc_sym.c
