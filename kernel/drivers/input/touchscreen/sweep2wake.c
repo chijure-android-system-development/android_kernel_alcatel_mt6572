@@ -85,14 +85,14 @@ MODULE_LICENSE("GPLv2");
 #define S2W_X_B1                500
 #define S2W_X_B2                700
 #define S2W_X_FINAL             450
-/* assume sprout */
-#elif defined(CONFIG_ARCH_MTK_PROJECT)
-#define S2W_Y_MAX               854
-#define S2W_X_MAX               480
-#define S2W_Y_LIMIT             S2W_Y_MAX-70
-#define S2W_X_B1                120
-#define S2W_X_B2                240
-#define S2W_X_FINAL             120
+/* assume MTK */
+#elif defined(CONFIG_ARCH_MT6572)
+#define S2W_Y_MAX               480
+#define S2W_X_MAX               320
+#define S2W_Y_LIMIT             S2W_Y_MAX-35
+#define S2W_X_B1                60
+#define S2W_X_B2                120
+#define S2W_X_FINAL             60
 #else
 /* defaults */
 #define S2W_Y_LIMIT             2350
