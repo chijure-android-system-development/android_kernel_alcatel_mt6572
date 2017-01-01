@@ -1,3 +1,0 @@
-kernel/mediatek/kernel/drivers/power/battery_meter.ko
-kernel/mediatek/kernel/drivers/power/battery_common.ko
-kernel/mediatek/kernel/drivers/power/linear_charging.ko
