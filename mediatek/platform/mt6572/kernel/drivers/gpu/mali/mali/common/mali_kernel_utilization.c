@@ -27,7 +27,7 @@ static mali_bool timer_running = MALI_FALSE;
 
 static u32 last_utilization = 0 ;
 
-static u32 mali_utilization_timeout = 1000;
+static u32 mali_utilization_timeout = 100;
 void (*mali_utilization_callback)(unsigned int) = NULL;
 
 static void calculate_gpu_utilization(void* arg)
