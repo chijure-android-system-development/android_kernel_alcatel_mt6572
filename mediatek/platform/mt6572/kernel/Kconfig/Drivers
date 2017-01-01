@@ -638,6 +638,12 @@ menuconfig PWR_LOSS_MTK_TEST
          Say Y here if you want do Power loss test for NAND Or EMMC
          If unsure, say N.
 
+config THUNDERCHARGE_CONTROL
+     bool "Enable ThunderCharge Current Controlling mechanism"
+     depends on MTK_SMART_BATTERY
+     help
+       Say Y here to enable ability to adjust charger current
+
 if PWR_LOSS_MTK_TEST
 config PWR_LOSS_MTK_DEBUG
         bool "Debugging"

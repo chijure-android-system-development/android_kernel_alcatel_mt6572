@@ -32,6 +32,9 @@
 #include <mach/battery_common.h>
 #include <mach/charging.h>
 #include "cust_charging.h"
+#ifdef CONFIG_THUNDERCHARGE_CONTROL
+#include "thundercharge_control.h"
+#endif
 #include <mach/mt_boot.h>
 #include <linux/delay.h>
 #include <mach/battery_meter.h>
@@ -361,17 +364,29 @@ void select_charging_curret(void)
              }
 			#else
             {    
+#ifdef CONFIG_THUNDERCHARGE_CONTROL
+		g_temp_CC_value = custom_usb_current;
+#else
       	        g_temp_CC_value = USB_CHARGER_CURRENT;            
+#endif
             }
 			#endif
         } 
         else if (BMT_status.charger_type == NONSTANDARD_CHARGER) 
         {   
+#ifdef CONFIG_THUNDERCHARGE_CONTROL
+	    g_temp_CC_value = custom_ac_current;
+#else
             g_temp_CC_value = NON_STD_AC_CHARGER_CURRENT;
+#endif
         } 
         else if (BMT_status.charger_type == STANDARD_CHARGER) 
         {
+#ifdef CONFIG_THUNDERCHARGE_CONTROL
+	    g_temp_CC_value = custom_ac_current;
+#else
             g_temp_CC_value = AC_CHARGER_CURRENT;
+#endif
         }
         else if (BMT_status.charger_type == CHARGING_HOST) 
         {
