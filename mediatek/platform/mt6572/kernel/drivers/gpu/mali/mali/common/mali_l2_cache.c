@@ -83,7 +83,7 @@ struct mali_l2_cache_core
 	mali_bool            power_is_enabled;
 };
 
-#define MALI400_L2_MAX_READS_DEFAULT 0x1C
+#define MALI400_L2_MAX_READS_DEFAULT 0x30
 
 static struct mali_l2_cache_core *mali_global_l2_cache_cores[MALI_MAX_NUMBER_OF_L2_CACHE_CORES];
 static u32 mali_global_num_l2_cache_cores = 0;
