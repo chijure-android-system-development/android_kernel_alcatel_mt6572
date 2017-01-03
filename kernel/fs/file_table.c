@@ -157,7 +157,6 @@ over:
 	            struct files_struct *files = p->files;
 	            struct fdtable *fdt = files_fdtable(files);
 	            if(files && fdt) {
-	                fd_show_open_files(pid, files, fdt);
 	            }	        
 	        }
 	        fd_dump_all_files = 0x1;
