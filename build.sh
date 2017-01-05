@@ -48,19 +48,6 @@ then
 echo -e "$red Kernel Compilation failed! Fix the errors! $nocol"
 exit 1
 fi
-}
-
-case $1 in
-clean)
-export TARGET_PRODUCT=$codename MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
-rm -r mediatek/custom/out
-cd kernel
-make $jobcount clean mrproper
-;;
-*)
-compile_kernel
-;;
-esac
 
 # the zip creation
 if [ -a $ZIMAGE ]; 
@@ -85,7 +72,20 @@ else # [ -f arch/arm/boot/"$kerneltype" ]
     echo "the build failed so a zip won't be created"
 fi # [ -f arch/arm/boot/"$kerneltype" ]
 
+}
 
+case $1 in
+clean)
+export TARGET_PRODUCT=$codename MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
+cd kernel
+make $jobcount clean mrproper
+cd ..
+rm -r mediatek/custom/out
+;;
+*)
+compile_kernel
+;;
+esac
 
 BUILD_END=$(date +"%s")
 DIFF=$(($BUILD_END - $BUILD_START))
