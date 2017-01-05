@@ -54,14 +54,13 @@ if [ -a $ZIMAGE ];
 then
 rm -f zip-creator/kernel/$kerneltype
 
-   cp $ZIMAGE zip-creator/tools/$kerneltype
 	# changed antdking "now copy all created modules"
 	# modules
 	# (if you get issues with copying wireless drivers then it's your own fault for not cleaning)
 
 	find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/
 
-	zipfile="$kernel-$variant-$daytime.zip"
+	zipfile="$kernel-$variant-$codename.zip"
 	cd zip-creator
 	rm -f *.zip
 	zip -r $zipfile * -x *kernel/.gitignore*
