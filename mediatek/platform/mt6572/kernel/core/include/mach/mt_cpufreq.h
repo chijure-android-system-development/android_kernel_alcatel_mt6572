@@ -22,16 +22,17 @@
 #define DVFS_D1              (1404000)   // KHz, OD
 #define DVFS_D2              (1300000)   // KHz, OD
 #define DVFS_D3              (1209000)   // KHz, OD
-#define DVFS_F1              (1001000)   // KHz
+#define DVFS_F1              (1001000)    // KHz
 #define DVFS_F2              (806000)    // KHz
-#define DVFS_F3              (598000)    // KHz
+#define DVFS_F3              (598000)    // Khz
+#define DVFS_F4              (498000)    // Khz
 
 #define DVFS_V0              (1250)  // mV, OD
 #define DVFS_V1              (1150)  // mV
 
 #define DVFS_MIN_VCORE       (1150)
 #define DEFAULT_FREQ         (1001000)   // KHz
-#define NOR_MAX_FREQ         (1001000)   // KHz
+#define NOR_MAX_FREQ         (1404000)   // KHz
 
 #define CORE_NUM             (2)
 #define VCORE_NUM            (2)

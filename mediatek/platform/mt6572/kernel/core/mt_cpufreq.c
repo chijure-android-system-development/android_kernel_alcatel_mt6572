@@ -108,24 +108,33 @@ struct mt_cpu_power_info
 };
 
 static struct mt_cpu_freq_info mt6572_freqs_e1[] = {
+    OP(DVFS_D1, DVFS_V0),
     OP(DVFS_D2, DVFS_V0),
     OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),
     OP(DVFS_F3, DVFS_V1),
+    OP(DVFS_F4, DVFS_V1),
 };
 
 static struct mt_cpu_freq_info mt6572_freqs_e1_1[] = {
+    OP(DVFS_D1, DVFS_V0),
+    OP(DVFS_D2, DVFS_V0),
     OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),
     OP(DVFS_F3, DVFS_V1),
+    OP(DVFS_F4, DVFS_V1),
 };
 
 static struct mt_cpu_freq_info mt6572m_freqs_e1[] = {
+    OP(DVFS_D1, DVFS_V0),
+    OP(DVFS_D2, DVFS_V0),
+    OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),
     OP(DVFS_F3, DVFS_V1),
+    OP(DVFS_F4, DVFS_V1),
 };
 
 static unsigned int mt_cpu_freqs_num;
@@ -145,9 +154,11 @@ static struct mt_cpu_power_info mt_cpu_golden_power[] = {
     {.cpufreq_khz = DVFS_F2, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 2, .cpufreq_power = 362 },
     {.cpufreq_khz = DVFS_D3, .cpufreq_volt = DVFS_V0, .cpufreq_ncpu = 1, .cpufreq_power = 343 },
     {.cpufreq_khz = DVFS_F3, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 2, .cpufreq_power = 302 },
+    {.cpufreq_khz = DVFS_F4, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 2, .cpufreq_power = 302 },
     {.cpufreq_khz = DVFS_F1, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 1, .cpufreq_power = 249 },
     {.cpufreq_khz = DVFS_F2, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 1, .cpufreq_power = 215 },
     {.cpufreq_khz = DVFS_F3, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 1, .cpufreq_power = 181 },
+    {.cpufreq_khz = DVFS_F4, .cpufreq_volt = DVFS_V1, .cpufreq_ncpu = 1, .cpufreq_power = 181 },
 };
 
 static struct mt_cpu_power_info *mt_cpu_power = NULL;
