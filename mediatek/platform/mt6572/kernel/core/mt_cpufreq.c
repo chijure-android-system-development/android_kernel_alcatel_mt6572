@@ -109,7 +109,6 @@ struct mt_cpu_power_info
 
 static struct mt_cpu_freq_info mt6572_freqs_e1[] = {
     OP(DVFS_D1, DVFS_V0),
-    OP(DVFS_D2, DVFS_V0),
     OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),
@@ -119,7 +118,6 @@ static struct mt_cpu_freq_info mt6572_freqs_e1[] = {
 
 static struct mt_cpu_freq_info mt6572_freqs_e1_1[] = {
     OP(DVFS_D1, DVFS_V0),
-    OP(DVFS_D2, DVFS_V0),
     OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),
@@ -129,7 +127,6 @@ static struct mt_cpu_freq_info mt6572_freqs_e1_1[] = {
 
 static struct mt_cpu_freq_info mt6572m_freqs_e1[] = {
     OP(DVFS_D1, DVFS_V0),
-    OP(DVFS_D2, DVFS_V0),
     OP(DVFS_D3, DVFS_V0),
     OP(DVFS_F1, DVFS_V1),
     OP(DVFS_F2, DVFS_V1),

@@ -19,13 +19,13 @@
 
 
 #define DVFS_D0              (1599000)   // KHz, OD
-#define DVFS_D1              (1404000)   // KHz, OD
+#define DVFS_D1              (1400000)   // KHz, OD
 #define DVFS_D2              (1300000)   // KHz, OD
-#define DVFS_D3              (1209000)   // KHz, OD
-#define DVFS_F1              (1001000)    // KHz
-#define DVFS_F2              (806000)    // KHz
-#define DVFS_F3              (598000)    // Khz
-#define DVFS_F4              (498000)    // Khz
+#define DVFS_D3              (1200000)   // KHz, OD
+#define DVFS_F1              (1000000)    // KHz
+#define DVFS_F2              (800000)    // KHz
+#define DVFS_F3              (600000)    // Khz
+#define DVFS_F4              (500000)    // Khz
 
 #define DVFS_V0              (1250)  // mV, OD
 #define DVFS_V1              (1150)  // mV
