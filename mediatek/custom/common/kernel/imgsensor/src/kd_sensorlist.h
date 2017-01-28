@@ -67,6 +67,9 @@ UINT32 GC0329_YUV_SensorInit(PSENSOR_FUNCTION_STRUCT *pfFunc);
 //zhao.li@tcl add for Hi257 Bug 466785
 UINT32 HI257_YUV_SensorInit(PSENSOR_FUNCTION_STRUCT *pfFunc);
 //zhao.li@tcl add for Hi257 Bug 466785 end
+//zhao.li@tcl add for SP2519 
+UINT32 SP2519_YUV_SensorInit(PSENSOR_FUNCTION_STRUCT *pfFunc);
+//zhao.li@tcl add for SP2519
 //! Add Sensor Init function here
 //! Note:
 //! 1. Add by the resolution from ""large to small"", due to large sensor
@@ -253,6 +256,9 @@ ACDK_KD_SENSOR_INIT_FUNCTION_STRUCT kdSensorList[MAX_NUM_OF_SUPPORT_SENSOR+1] =
 
 #if defined(HI257_YUV)
     {HI257_SENSOR_ID, SENSOR_DRVNAME_HI257_YUV, HI257_YUV_SensorInit}, 
+#endif
+#if defined(SP2519_YUV)
+    {SP2519_SENSOR_ID, SENSOR_DRVNAME_SP2519_YUV, SP2519_YUV_SensorInit}, 
 #endif
 //zhao.li@tcl add for Bug 495381 end
 

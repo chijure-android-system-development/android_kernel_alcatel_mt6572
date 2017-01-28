@@ -193,6 +193,7 @@
 #define GC0329_SENSOR_ID                         0x00C0
 #define HI253_SENSOR_ID                         0x0092
 #define HI257_SENSOR_ID                         0x00C4
+#define SP2519_SENSOR_ID                         0x0025
 //zhao.li@tcl add for Bug 495381 end
 /* CAMERA DRIVER NAME */
 #define CAMERA_HW_DEVNAME            "kd_camera_hw"
@@ -259,6 +260,7 @@
 #define SENSOR_DRVNAME_GC0329_YUV    	"gc0329yuv"
 #define SENSOR_DRVNAME_HI253_YUV    	"hi253yuv"
 #define SENSOR_DRVNAME_HI257_YUV    	"hi257yuv"
+#define SENSOR_DRVNAME_SP2519_YUV    	"sp2519yuv"
 //zhao.li@tcl add for Bug 495381 end
 
 /*******************************************************************************
