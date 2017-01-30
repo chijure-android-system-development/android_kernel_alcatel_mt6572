@@ -212,6 +212,8 @@ on fs_property:ro.mount.fs=EXT4
     symlink /custpack/modem/modem_1_wg_n.img /system/etc/firmware/modem_1_wg_n.img
     mkdir /system/media/images
     symlink /custpack/boot_logo /system/media/images/boot_logo
+	rm /system/etc/permissions/android.hardware.camera.xml
+    symlink /custpack/JRD_custres/permissions/android.hardware.camera.xml /system/etc/permissions/android.hardware.camera.xml
     mkdir /system/usr/srec/config
     symlink /custpack/usr/srec/config/en.us /system/usr/srec/config/en.us
  

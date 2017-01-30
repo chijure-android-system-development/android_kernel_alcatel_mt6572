@@ -80,7 +80,7 @@ OTP_SUPPORT = TRUE
   #   FALSE -> TRUE
   #   TRUE -> FALSE
 
-BAND_SUPPORT = TRIPLE
+BAND_SUPPORT = QUAD
   # Description:
   #   Described the support band of RF
   # Option Values:
@@ -134,7 +134,7 @@ UMTS_RF_MODULE = CUSTOM_MT6166
   #   Non-switchable
 
 # ------------------------------ Verno information
-VERNO = MOLY.WR8.W1315.MD.WG.MP.V1.F1.P6
+VERNO = MOLY.WR8.W1315.MD.WG.MP.V1.F1.P14
 BUILD = BUILD_NO
 BRANCH = WR8.W1315.MD.WG.MP
 # ------------------------------ System configurations
@@ -168,11 +168,17 @@ BOARD_VER = JRDHZ72_WE_JB3_BB
 #==============
 JRD_SMART_PHONE_SML_SEC = TRUE #TRUE, FALSE tianhongyan add
 
-CUSTOM_OPTION += __CB_CHANNEL_ONLY_STORED_IN_NVRAM__
+#CUSTOM_OPTION += __CB_CHANNEL_ONLY_STORED_IN_NVRAM__
 
 CUSTOM_OPTION += __SMSAL_MSG_WAIT_STORE_BY_AP__
+
+CUSTOM_OPTION += __REPORT_RAC__
+
 # if you want to ture off L1_EPSK_TX please add following custom option
 #CUSTOM_OPTION += __EPSK_TX_SW_SWITCH_OFF
+
+# shaohua.xia for CB MID
+#CUSTOM_OPTION += FEATURE_CB_MID
 
 # internal configuration
 PROJECT_MAKEFILE_EXT = JRDHZ72_WE_JB3_HSPA_EXT

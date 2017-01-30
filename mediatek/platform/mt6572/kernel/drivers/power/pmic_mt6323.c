@@ -58,7 +58,9 @@
 #include <mach/battery_common.h>
 #include <linux/time.h> 
 
+#ifdef KPD_PMIC_RSTKEY_MAP
 #include <mtk_kpd.h>
+#endif
 
 #if defined (MTK_KERNEL_POWER_OFF_CHARGING)
 #include <mach/mt_boot.h>

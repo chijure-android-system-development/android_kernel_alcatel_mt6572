@@ -144,13 +144,13 @@ unsigned char tp_vendor;
 static unsigned char CTPM_FW_CAMRY_TRULY[]=
 {
 	//#include "ft_app_camry_truly.i"
-	#include "YarisM_ID80_V1a_20131010_app.i"
+	#include "YARIS_M_ID85_V15_20131007_app.i"
 };
 
 static unsigned char CTPM_FW_CAMRY_MUTTO[]=
 {
 	//#include "ft_app_camry_mutto.i"
-	#include "YarisM_ID80_V1a_20131010_app.i"
+	#include "YARIS_M_ID85_V15_20131007_app.i"
 };
 
 static unsigned char CTPM_FW_BEETLE_EACH[]=
@@ -163,7 +163,7 @@ static unsigned char CTPM_FW_BEETLE_EACH[]=
 static unsigned char CTPM_FW_BEETLE_JUNDA[]=
 {
 	//#include "Ver0x0B_Beetle_FT6306_0x85_20130222_app.i"
-	#include "Soul4_ID85_V0b_20131127_app.i"
+	#include "YARIS_M_ID85_V16_20131010_app.i"
 	
 };
 
@@ -719,7 +719,7 @@ int fts_ctpm_auto_upg(unsigned char tp_vendor)
 	unsigned char version_list_camry_truly[] = {0x0,0xa6,0xa,0xb};  //Keep the Truly tp firmware old version list that allows to be updated.
 	unsigned char version_list_camry_mutto[] = {0x0,0xa6};  //Keep the Mutto tp firmware old version list that allows to be updated.
 	unsigned char version_list_camry_each[] = {0x0,0x10,0x15,0x16,0x17,0x18,0x19,0x1a};	//Keep the ft6306 tp firmware old version list that allows to be updated.
-	unsigned char version_list_camry_junda[] = {0x0,0xa,0xb,0x10,0x16};	//Keep the ft6306 tp firmware old version list that allows to be updated.
+	unsigned char version_list_camry_junda[] = {0x0,0x10,0x11,0x12,0x13,0x14,0x15,0x16};	//Keep the ft6306 tp firmware old version list that allows to be updated.
 	int i,i_ret = -1;
 
 	uc_tp_fm_ver = ft5x0x_read_fw_ver();
@@ -803,7 +803,7 @@ int fts_ctpm_auto_upg(unsigned char tp_vendor)
 		TPD_DMESG("[FT6306] tp vendor is unkown(0x%x),uc_tp_fm_ver = 0x%x, uc_host_fm_ver = 0x%x\n",tp_vendor, uc_tp_fm_ver, uc_host_fm_ver);
 		for(i = 0;i < sizeof(version_list_camry_junda)/sizeof(version_list_camry_junda[0]); i++)
 		{
-			if((uc_tp_fm_ver<uc_host_fm_ver) || uc_tp_fm_ver==0x16)//llf 2013626
+			if((uc_tp_fm_ver<uc_host_fm_ver) || uc_tp_fm_ver==0x13)//llf 2013626
 			//if(1) //force to up
 			{
 				if(uc_tp_fm_ver == version_list_camry_junda[i])  
@@ -1355,10 +1355,14 @@ static int touch_event_handler(void *unused)
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
-
+#ifdef MT6575
+	//power on, need confirm with SA
+	hwPowerOn(MT65XX_POWER_LDO_VGP2, VOL_3300, "TP");
+	hwPowerOn(MT65XX_POWER_LDO_VGP1, VOL_1800, "TP");  
+#endif 
 #ifdef TPD_CLOSE_POWER_IN_SLEEP	 
-	//hwPowerDown(TPD_POWER_SOURCE,"TP");
-	//hwPowerOn(TPD_POWER_SOURCE,VOL_3300,"TP");
+	hwPowerDown(TPD_POWER_SOURCE,"TP");
+	hwPowerOn(TPD_POWER_SOURCE,VOL_3300,"TP");
 	msleep(100);
 #endif
 	msleep(5);
@@ -1495,7 +1499,7 @@ force_detect:
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
 #ifdef TPD_CLOSE_POWER_IN_SLEEP	
-	//hwPowerOn(TPD_POWER_SOURCE,VOL_3300,"TP");
+	hwPowerOn(TPD_POWER_SOURCE,VOL_3300,"TP");
 	msleep(5);
 #else
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
@@ -1522,7 +1526,7 @@ force_detect:
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
-	//hwPowerDown(TPD_POWER_SOURCE,"TP");
+	hwPowerDown(TPD_POWER_SOURCE,"TP");
 #else
 	TPD_DMESG("TP enter sleep mode_____________________________________\n");
 	retval=i2c_master_send(i2c_clientft, data, 2);

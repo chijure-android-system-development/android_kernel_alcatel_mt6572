@@ -30,9 +30,9 @@
 
 #define TPD_HAVE_BUTTON
 
-unsigned char MSG_FIRMWARE_EA[94*1024] =
+unsigned char MSG_FIRMWARE_JD[94*1024] =
 {
-  #include "SOUL4_MSG2138A_YJ_V504.h"
+  #include "YarisM_JD_V203_131011.h"
 };
 
 
@@ -192,18 +192,6 @@ static u8 *dma_bufferma = NULL;//FTS_BYTE=u8;
 static u32 dma_handlema = NULL;
 static struct mutex dma_model_mutexma;
 
-/*reset the chip*/
-static void _HalTscrHWReset(void)
-{
-	mt_set_gpio_mode(GPIO_CTP_EN_PIN, GPIO_CTP_EN_PIN_M_GPIO);
-	mt_set_gpio_dir(GPIO_CTP_EN_PIN, GPIO_DIR_OUT);
-	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
-	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
-	mdelay(10);
-	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
-	mdelay(50);
-}
-
 static void I2cDMA_init()
 {
 	mutex_init(&dma_model_mutexma);
@@ -222,7 +210,6 @@ static void I2cDMA_exit()
 		dma_bufferma = NULL;
 		dma_handlema= 0;
 	}
-	_HalTscrHWReset();
 	printk("[MSG2138A][TSP] dma_free_coherent OK\n");
 }
 
@@ -365,6 +352,17 @@ static u8 g_dwiic_info_data[1024];
 static u8 Auto_APK_flag=0;//if apk upgrade =1;
 unsigned short fw_major_version=0,fw_minor_version=0;
 
+/*reset the chip*/
+static void _HalTscrHWReset(void)
+{
+	mt_set_gpio_mode(GPIO_CTP_EN_PIN, GPIO_CTP_EN_PIN_M_GPIO);
+	mt_set_gpio_dir(GPIO_CTP_EN_PIN, GPIO_DIR_OUT);
+	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
+	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
+	mdelay(10);
+	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
+	mdelay(50);
+}
 /*add by liukai for release the touch action*/
 static void msg21xx_release(void)
 {
@@ -692,7 +690,7 @@ static ssize_t firmware_update_c33 ( size_t size, EMEM_TYPE_t emem_type )
 		{
 			for ( j = 0; j < 1024; j++ )        //Read 1k bytes
 			{
-				temp[i][j] = MSG_FIRMWARE_EA[(i*1024)+j]; // Read the bin files of slave firmware from the baseband file system
+				temp[i][j] = MSG_FIRMWARE_JD[(i*1024)+j]; // Read the bin files of slave firmware from the baseband file system
 			}
 		}
 		printk("[MSG2138A] Date transf completed !\n");
@@ -956,7 +954,6 @@ static void firmware_version()
     unsigned char dbbus_tx_data[3];
     unsigned char dbbus_rx_data[4] ;
 
-    _HalTscrHWReset();
     dbbusDWIICEnterSerialDebugMode();
     dbbusDWIICStopMCU();
     dbbusDWIICIICUseBus();
@@ -978,8 +975,6 @@ static void firmware_version()
     TP_DEBUG("***major = %d ***\n", fw_major_version);
     TP_DEBUG("***minor = %d ***\n", fw_minor_version);
     sprintf(fw_version,"%03d%03d", fw_major_version, fw_minor_version);
-    _HalTscrHWReset();
-    return ;
     //TP_DEBUG(printk("***fw_version = %s ***\n", fw_version);)
 }
 
@@ -1040,7 +1035,6 @@ static int firmware_updata()
 			firmware_update_c33 ( 1, EMEM_MAIN );
 		}
 	}
-	_HalTscrHWReset();
 	 i2c_clientma->timing = 100;
 	 i2c_clientma->addr = FW_ADDR_MSG21XX_TP;
 	return 1;
@@ -1542,7 +1536,6 @@ static int FW_repair_detect (void)
 		drvTP_read_info_dwiic_c33();
 	}
     }
-    _HalTscrHWReset();
     i2c_clientma->timing = 100;
     i2c_clientma->addr = FW_ADDR_MSG21XX_TP;
     return 0;
@@ -1554,26 +1547,27 @@ static int Upgrade_detect()
 
 	printk("[MSG2138A]--------------------------------------Upgrade_detect\n");
 
-
-	if(fw_major_version==2 || fw_major_version==1)//junda
+	if(fw_major_version==2)//junda
 	{
-		//wanted_major_version= (MSG_FIRMWARE_JD[0x7f4f] << 8) + MSG_FIRMWARE_JD[0x7f4e];
-		//wanted_minor_version= (MSG_FIRMWARE_JD[0x7f51] << 8) + MSG_FIRMWARE_JD[0x7f50];
-		fw_major_version=5;
-		fw_minor_version=0;
-	}
-	if(fw_major_version==5) //EACH
-	{
-		wanted_major_version= (MSG_FIRMWARE_EA[0x7f4f] << 8) + MSG_FIRMWARE_EA[0x7f4e];
-		wanted_minor_version= (MSG_FIRMWARE_EA[0x7f51] << 8) + MSG_FIRMWARE_EA[0x7f50];
+		wanted_major_version= (MSG_FIRMWARE_JD[0x7f4f] << 8) + MSG_FIRMWARE_JD[0x7f4e];
+		wanted_minor_version= (MSG_FIRMWARE_JD[0x7f51] << 8) + MSG_FIRMWARE_JD[0x7f50];
 	}
 	else
 	{
 		FW_repair_detect();
+		if(fw_major_version==2)//junda
 		{
+			wanted_major_version= (MSG_FIRMWARE_JD[0x7f4f] << 8) + MSG_FIRMWARE_JD[0x7f4e];
+			wanted_minor_version= (MSG_FIRMWARE_JD[0x7f51] << 8) + MSG_FIRMWARE_JD[0x7f50];
+		}
+	/*
+		else if(fw_major_version==5) //EACH
+		{
+			TPMSG="EACH";
 			wanted_major_version= (MSG_FIRMWARE_EA[0x7f4f] << 8) + MSG_FIRMWARE_EA[0x7f4e];
 			wanted_minor_version= (MSG_FIRMWARE_EA[0x7f51] << 8) + MSG_FIRMWARE_EA[0x7f50];
 		}
+	*/
 		else
 		{
 			return -1;
@@ -1584,9 +1578,7 @@ static int Upgrade_detect()
 	printk("[MSG2138A][CTP_fw_version] major = %d ,minor = %d ************************************\n",fw_major_version,fw_minor_version);
 
 	if(wanted_major_version==fw_major_version && wanted_minor_version>fw_minor_version)//version detect
-	       firmware_updata();//force to upgrade
-	if(wanted_major_version==2 || wanted_major_version==1)
-		firmware_updata();
+		firmware_updata();//force to upgrade
 	return 0;
 }
  
@@ -1607,7 +1599,7 @@ static int Upgrade_detect()
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
-	//hwPowerOn(MT65XX_POWER_LDO_VGP2, VOL_2800, "TP");
+	hwPowerOn(MT65XX_POWER_LDO_VGP2, VOL_2800, "TP");
 	msleep(5);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	msleep(500);
@@ -1616,7 +1608,7 @@ static int Upgrade_detect()
 	if((i2c_smbus_read_i2c_block_data(i2c_clientma, 0x00, 1, &data))< 0)
 	   {
 		   printk("[CTP-I2C-ERROR] [MSG2138A]transfer error addr=0x%x------llf, line: %d\n", i2c_clientma->addr,__LINE__);
-		  retval=Upgrade_detect(); //modify by llf PR631056 20140327
+		  retval==Upgrade_detect();
 		  if(retval<0){
 		   	return -1; 
 		  }
@@ -1705,10 +1697,10 @@ static int Upgrade_detect()
 	mt65xx_eint_set_sens(CUST_EINT_TOUCH_PANEL_NUM, CUST_EINT_TOUCH_PANEL_SENSITIVE);
 	mt65xx_eint_set_hw_debounce(CUST_EINT_TOUCH_PANEL_NUM, CUST_EINT_TOUCH_PANEL_DEBOUNCE_CN);
 	mt65xx_eint_registration(CUST_EINT_TOUCH_PANEL_NUM, CUST_EINT_TOUCH_PANEL_DEBOUNCE_EN, 1, tpd_eint_interrupt_handler, 1); 
-	mt65xx_eint_mask(CUST_EINT_TOUCH_PANEL_NUM);
+	mt65xx_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
+
 
 	msleep(100);
-
 	mthread = kthread_run(touch_event_handler, 0, TPD_DEVICEMA);
 	 if (IS_ERR(mthread))
 		 { 
@@ -1720,8 +1712,6 @@ static int Upgrade_detect()
 	{            
 		printk("device_create_file_version \n");        
 	}
-
-	mt65xx_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);  
 	TPD_DMESG("Touch Panel Device Probe %s\n", (retval < TPD_OK) ? "FAIL" : "PASS");
 	return 0;
    
@@ -1779,7 +1769,7 @@ static int Upgrade_detect()
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
-	//hwPowerOn(MT65XX_POWER_LDO_VGP2, VOL_2800, "TP");
+	hwPowerOn(MT65XX_POWER_LDO_VGP2, VOL_2800, "TP");
 	msleep(5);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	msleep(500);
@@ -1800,7 +1790,7 @@ static int Upgrade_detect()
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ONE);
 	mt_set_gpio_out(GPIO_CTP_EN_PIN, GPIO_OUT_ZERO);
 	msleep(5);
-	//hwPowerDown(MT65XX_POWER_LDO_VGP2,"TP");
+	hwPowerDown(MT65XX_POWER_LDO_VGP2,"TP");
 	msleep(5);
 
 	return retval;
