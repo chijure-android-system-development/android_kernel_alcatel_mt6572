@@ -135,3 +135,7 @@ obj-$(CONFIG_VIRT_DRIVERS)	+= virt/
 obj-$(CONFIG_HYPERV)		+= hv/
 
 obj-$(CONFIG_PM_DEVFREQ)	+= devfreq/
+
+ifeq (1, $(shell if [ -d drivers/exfat ] ; then echo 1 ; fi))
+obj-y   += exfat/
+endif
