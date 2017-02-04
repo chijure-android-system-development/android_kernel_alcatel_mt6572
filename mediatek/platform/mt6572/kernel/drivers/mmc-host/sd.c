@@ -5955,6 +5955,7 @@ static int msdc_ops_get_cd(struct mmc_host *mmc)
 			host->card_inserted = (host->sd_cd_polarity == 0) ? 1 : 0;
 		else
         	host->card_inserted = (host->sd_cd_polarity == 0) ? 0 : 1;
+                host->card_inserted = 1;//add by jch for emmc detect
     } else {
         host->card_inserted = 1; /* TODO? Check DAT3 pins for card detection */
     }

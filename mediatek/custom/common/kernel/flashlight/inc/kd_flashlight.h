@@ -98,13 +98,11 @@ typedef enum
 
 /* cotta-- set capture delay of sensor */
 #define FLASHLIGHTIOC_T_DELAY _IOW(FLASHLIGHT_MAGIC, 35, unsigned int)
-//add by qixing.chen for FR 442093 	begin
-#define FLASHLIGHTIOC_X_SET_FLASHLEVEL _IOWR(FLASHLIGHT_MAGIC,35,unsigned long)
+#define FLASHLIGHTIOC_X_SET_FLASHLEVEL _IOWR(FLASHLIGHT_MAGIC,50,unsigned long)
 
-#define FLASHLIGHTIOC_ENABLE_STATUS _IOWR(FLASHLIGHT_MAGIC,40,unsigned long)
+#define FLASHLIGHTIOC_ENABLE_STATUS _IOWR(FLASHLIGHT_MAGIC,55,unsigned long)
 
-#define FLASHLIGHT_TORCH_SELECT _IOWR(FLASHLIGHT_MAGIC,45,unsigned long)
-//add by qixing.chen for FR 442093 	end
+#define FLASHLIGHT_TORCH_SELECT _IOWR(FLASHLIGHT_MAGIC,60,unsigned long)
 
 
 #define FLASH_IOC_SET_TIME_OUT_TIME_MS  _IOR(FLASHLIGHT_MAGIC, 100, int)

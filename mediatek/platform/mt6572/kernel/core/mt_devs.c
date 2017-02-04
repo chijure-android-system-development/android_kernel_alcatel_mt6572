@@ -22,8 +22,9 @@
 #include <linux/version.h>
 #include "mach/mtk_ccci_helper.h"
 #include <mach/mtk_memcfg.h>
-
-
+#ifdef CONFIG_CALIFORNIA_BORAD
+#include <mach/mt_gpio.h>//add by jch for board info
+#endif
 extern unsigned long pmem_start;
 #define PMEM_MM_START  (pmem_start)
 #define PMEM_MM_SIZE   (0x1700000)
@@ -164,6 +165,141 @@ struct sysinfo_attribute{
 };
 
 static struct kobject sn_kobj;
+
+//add by jch for board info
+#ifdef CONFIG_CALIFORNIA_BORAD
+#define PCBA_1 0
+#define PCBA_2 4
+#define PCBA_3 8
+#define PCBA_4 12
+static char board_info[32];
+
+static struct kobject bd_kobj;
+
+static ssize_t bd_show(char *buf){
+    return snprintf(buf, 4096, "%s\n", board_info);
+}
+
+struct sysinfo_attribute bd_attr = {
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36))
+    .attr = {"board_info", THIS_MODULE, 0644},
+#else
+    .attr = {"board_info", 0644},
+#endif
+    .show = bd_show,
+    .store = NULL
+};
+
+static ssize_t hwinfo_show(struct kobject *kobj, struct attribute *attr, char *buf)
+{
+    struct sysinfo_attribute *sysinfo_attr = to_sysinfo_attribute(attr);
+    ssize_t ret = -EIO;
+
+    if(sysinfo_attr->show)
+        ret = sysinfo_attr->show(buf);
+
+    return ret;
+}
+
+static ssize_t hwinfo_store(struct kobject *kobj, struct attribute *attr, const char *buf, size_t count)
+{
+    struct sysinfo_attribute *sysinfo_attr = to_sysinfo_attribute(attr);
+    ssize_t ret = -EIO;
+
+    if(sysinfo_attr->store)
+        ret = sysinfo_attr->store(buf, count);
+
+    return ret;
+}
+
+static struct sysfs_ops bd_sysfs_ops = {
+    .show = hwinfo_show,
+    .store = hwinfo_store
+};
+
+static struct attribute *bd_attrs[] = {
+    &bd_attr.attr,
+    NULL
+};
+
+static struct kobj_type bd_ktype = {
+    .sysfs_ops = &bd_sysfs_ops,
+    .default_attrs = bd_attrs
+};
+
+void get_board_info(void){
+
+    int retl = 0;
+    s32 h1=2,h0=2,l1=2,l0=2;
+    int boardnum = 0 , rel;
+    memset(board_info, 0x00, 32);
+    mt_set_gpio_mode(GPIO110, GPIO_MODE_00);
+    mt_set_gpio_dir(GPIO110, GPIO_DIR_IN);
+    mt_set_gpio_mode(GPIO111, GPIO_MODE_00);
+    mt_set_gpio_dir(GPIO111, GPIO_DIR_IN);
+    mt_set_gpio_mode(GPIO112, GPIO_MODE_00);
+    mt_set_gpio_dir(GPIO112, GPIO_DIR_IN);
+    mt_set_gpio_mode(GPIO109, GPIO_MODE_00);
+    mt_set_gpio_dir(GPIO109, GPIO_DIR_IN);
+		
+	printk("*************************jch=h1=%d====\n",h1);
+	printk("*************************jch=h0=%d====\n",h0);
+	printk("*************************jch=l1=%d====\n",l1);
+	printk("*************************jch=l0=%d====\n",l0);  
+	
+//	mt_set_gpio_out(GPIO110,1);
+//	mt_set_gpio_out(GPIO111,1);
+//	mt_set_gpio_out(GPIO112,0);
+//	mt_set_gpio_out(GPIO109,0);
+	
+	
+    h1 = mt_get_gpio_in(GPIO110); 
+    printk("=JCH::kernel:=h1=%d====\n",h1);
+    h0 = mt_get_gpio_in(GPIO111);
+    printk("=JCH::kernel:=h0=%d====\n",h0); 
+    l1 = mt_get_gpio_in(GPIO112);
+    printk("=JCH::kernel:=l1=%d====\n",l1);
+    l0 = mt_get_gpio_in(GPIO109); 
+    printk("=JCH::kernel:=l0=%d====\n",l0);    
+    //boardnum = ((h1 & 1) << 4) | ((h0 & 1) << 3) | ((l1 & 1)<< 2) | (l0 & 1) ;
+	//boardnum = ((h1<< 3) | (h0 << 2) | (l1 << 1) | l0);
+	boardnum = ((h1 & 1) << 3) | ((h0 & 1) << 2) | ((l1 & 1)<< 1) | (l0 & 1) ;
+    printk("=JCH::kernel:=get board info boardnum=%d====\n",boardnum);  
+    if((l0 & 1) == 1)
+    {
+       memcpy(board_info, "PCBA_5", 6);	
+       printk("=JCH::kernel:=get board info PCBA_5 ======\n"); 
+       goto KO;
+    }
+    switch(boardnum){
+      case PCBA_1: 
+       memcpy(board_info, "PCBA_1", 6);	
+       printk("=JCH::kernel:=get board info PCBA_1 ======\n");  
+       break;
+      case PCBA_2: 
+       memcpy(board_info, "PCBA_2", 6);	 
+       printk("=JCH::kernel:=get board info PCBA_2 ======\n");  
+       break;
+      case PCBA_3: 
+       memcpy(board_info, "PCBA_3", 6);	 
+       printk("=JCH::kernel:=get board info PCBA_3 ======\n"); 
+       break;
+      case PCBA_4: 
+       memcpy(board_info, "PCBA_4", 6);	
+       printk("=JCH::kernel:=get board info PCBA_4 ======\n"); 
+       break;
+      default: 
+       memcpy(board_info, "ERRO", 6);	
+       printk("=JCH::kernel:=get board info erro!!!!======\n");    
+    }
+ KO:  retl = kobject_init_and_add(&bd_kobj, &bd_ktype, NULL, "hw_info");
+      printk("---JCH kernel -----board_info = %s \n", board_info); 
+	
+      if (retl < 0)
+	printk("=JCH::kernel:= [%s] fail to add kobject\n", "hw_info");
+}
+#endif
+//end add by jch for board info
 
 static ssize_t sn_show(char *buf){
     return snprintf(buf, 4096, "%s\n", serial_number);
@@ -1638,6 +1774,8 @@ retval = platform_device_register(&dummychar_device);
 		return retval;
 	}	
 #endif
-
+#ifdef CONFIG_CALIFORNIA_BORAD
+get_board_info(); //add by jch
+#endif
     return 0;
 }

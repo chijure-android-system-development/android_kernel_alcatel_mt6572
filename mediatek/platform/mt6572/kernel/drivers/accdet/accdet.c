@@ -575,6 +575,7 @@ static DEFINE_MUTEX(accdet_multikey_mutex);
 #define DW_KEY_HIGH_THR	 (500) //0.50v=500000uv
 #define DW_KEY_THR		 (240) //0.24v=240000uv
 #define UP_KEY_THR       (90) //0.09v=90000uv
+#define MD_KEY_THR_REAL	 (26)	//zrl add to fix music auto play when plug out headset,130910
 #define MD_KEY_THR		 (0)
 
 static int key_check(int b)
@@ -593,7 +594,10 @@ static int key_check(int b)
 		ACCDET_DEBUG("adc_data: %d mv\n",b);
 		return UP_KEY;
 	}
-	else if ((b < UP_KEY_THR) && (b >= MD_KEY_THR))
+//zrl modify to fix music auto play when plug out headset begin,130910	
+	//else if ((b < UP_KEY_THR) && (b >= MD_KEY_THR))
+	else if ((b < MD_KEY_THR_REAL) && (b >= MD_KEY_THR))
+//zrl modify to fix music auto play when plug out headset end,130910		
 	{
 		ACCDET_DEBUG("adc_data: %d mv\n",b);
 		return MD_KEY;
@@ -1023,6 +1027,7 @@ static inline void check_cable_type(void)
             if(current_status == 0)
             {
                 //ACCDET_DEBUG("[Accdet]remote button pressed,call_status:%d\n", call_status);
+                msleep(300);//legen-to solve the issue: music player active automatically when plug headset out and in frequently
                 while(pmic_pwrap_read(ACCDET_IRQ_STS) & ACCDET_IRQ)
 	        	{
 		          ACCDET_DEBUG("[Accdet]check_cable_type: MIC BIAS clear IRQ on-going1....\n");	
@@ -1108,7 +1113,12 @@ static inline void check_cable_type(void)
 			case LONG_MD:
 				ACCDET_DEBUG("[Accdet] Long press middle (0x%x)\n", multi_key);
                             if(call_status == 0)
-                                 notify_sendKeyEvent(ACC_MEDIA_STOP);
+                            {
+                                 ACCDET_DEBUG("[Accdet][jrd] NEXT !\n");
+                                 input_report_key(kpd_accdet_dev, KEY_NEXTSONG, 1);
+                                 input_report_key(kpd_accdet_dev, KEY_NEXTSONG, 0);
+                                 input_sync(kpd_accdet_dev);
+                            }
                             else
                                  notify_sendKeyEvent(ACC_END_CALL);
 				break;

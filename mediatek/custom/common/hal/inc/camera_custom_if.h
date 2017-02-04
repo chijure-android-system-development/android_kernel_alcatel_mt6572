@@ -114,7 +114,7 @@ MINT32 custom_GetYuvFlashlightDuty(void);
 MINT32 custom_GetYuvFlashlightStep(void);
 MINT32 custom_GetYuvFlashlightHighCurrentDuty(void);
 MINT32 custom_GetYuvFlashlightHighCurrentTimeout(void);
-
+MINT32 custom_GetYuvAfLampSupport(void);
 
 MUINT32 getLCMPhysicalOrientation();
 MINT32 get_atv_input_data();

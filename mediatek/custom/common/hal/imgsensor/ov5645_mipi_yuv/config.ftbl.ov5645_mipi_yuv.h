@@ -50,32 +50,48 @@ FTABLE_SCENE_INDEP()
     )
 #endif
     //==========================================================================
-#if 1
+#if 0
+	//MTK default
     //  Picture Size (Both width & height must be 16-aligned)
     FTABLE_CONFIG_AS_TYPE_OF_DEFAULT_VALUES(
         KEY_AS_(MtkCameraParameters::KEY_PICTURE_SIZE), 
         SCENE_AS_DEFAULT_SCENE(
-            ITEM_AS_DEFAULT_("2560x1712"), 
+            ITEM_AS_DEFAULT_("2560x1920"), 
             ITEM_AS_VALUES_(                                                 
                 "320x240",      "640x480",      "1024x768",     "1280x720",     "1280x768",     "1280x960",     "1440x960",               
                 "1600x960",     "1600x1200",    "2048x1152",    "2048x1360",    "2048x1536",    "2560x1440",    "2560x1712",
-                "2560x1920",    "2880x1728",
+                "2560x1920"   
             )
         ), 
     )
 #endif
+
+#if 1
+		//	Picture Size (Both width & height must be 16-aligned)
+		FTABLE_CONFIG_AS_TYPE_OF_DEFAULT_VALUES(
+			KEY_AS_(MtkCameraParameters::KEY_PICTURE_SIZE), 
+			SCENE_AS_DEFAULT_SCENE(
+				ITEM_AS_DEFAULT_("2560x1920"), 
+				ITEM_AS_VALUES_(												 
+					"640x480",		"1280x720", 	"1280x960",
+					"2048x1152",    "2560x1440",	"2560x1920"
+				)
+			), 
+		)
+#endif
+
     //==========================================================================
 #if 1
     //  Preview Size
     FTABLE_CONFIG_AS_TYPE_OF_DEFAULT_VALUES(
         KEY_AS_(MtkCameraParameters::KEY_PREVIEW_SIZE), 
         SCENE_AS_DEFAULT_SCENE(
-            ITEM_AS_DEFAULT_("728x480"), 
+            ITEM_AS_DEFAULT_("640x480"), 
             ITEM_AS_VALUES_(
                 "176x144",      "320x240",      "352x288",      "432x320",      "480x320",
                 "480x368",      "640x480",      "720x480",      "728x480",      "782x480",
                 "800x480",      "854x480",      "800x600",      "864x480",      "888x540",
-                "960x540",      "1280x720"
+                "960x540",      "1280x720",      "1280x960"
             )
         ), 
     )
@@ -89,7 +105,7 @@ FTABLE_SCENE_INDEP()
             ITEM_AS_DEFAULT_("640x480"), 
             ITEM_AS_VALUES_(
                 "176x144",      "480x320",      "640x480", 
-                "864x480",      "1280x720"
+                "864x480",      "1280x720",     "1280x960"
             )
         ), 
     )

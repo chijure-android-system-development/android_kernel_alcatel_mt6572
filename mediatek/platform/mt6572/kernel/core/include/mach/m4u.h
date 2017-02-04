@@ -3,7 +3,7 @@
 #include <linux/ioctl.h>
 #include <linux/fs.h>
 
-#define MTK_M4U_EXT_PAGE_TABLE
+//#define MTK_M4U_EXT_PAGE_TABLE
 
 #define M4U_PAGE_SIZE    0x1000                                  //4KB
 

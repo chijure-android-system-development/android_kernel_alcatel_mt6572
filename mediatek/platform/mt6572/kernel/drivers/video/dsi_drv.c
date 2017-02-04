@@ -44,7 +44,7 @@ extern unsigned int EnableVSyncLog;
 static wait_queue_head_t _dsi_wait_queue;
 static wait_queue_head_t _dsi_dcs_read_wait_queue;
 static wait_queue_head_t _dsi_wait_bta_te;
-static wait_queue_head_t _dsi_wait_ext_te;
+static wait_queue_head_t _dsi_wait_ext_te; //baoqiang add
 static wait_queue_head_t _dsi_wait_vm_done_queue;
 #endif
 static unsigned int _dsi_reg_update_wq_flag = 0;
@@ -157,7 +157,7 @@ static unsigned int dsi_dpi_isr_count = 0;
 unsigned long g_handle_esd_flag;
 
 static volatile bool dsiStartTransfer = false;
-static volatile bool isTeSetting = false;
+static volatile bool isTeSetting = false; //baoqiang add
 static volatile bool dsiTeEnable = false;
 static volatile bool dsiTeExtEnable = false;
 
@@ -329,6 +329,7 @@ static irqreturn_t _DSI_InterruptHandler(int irq, void *dev_id)
          }
       #endif  
    }
+   //baoqiang merge p9
    if (status.EXT_TE)
    {
       DBG_OnTeDelayDone();
@@ -357,7 +358,7 @@ static irqreturn_t _DSI_InterruptHandler(int irq, void *dev_id)
          }
       #endif
    }
-
+	//baoqiang merge p9
    if (status.VM_DONE)
    {
       //		DBG_OnTeDelayDone();
@@ -522,7 +523,7 @@ DSI_STATUS DSI_WaitForEngineNotBusy(void)
 
             DSI_Reset();
             dsiTeEnable = false;
-            dsiTeExtEnable = false;
+            dsiTeExtEnable = false; //baoqiang merge p9
 
             return DSI_STATUS_ERROR;
          }
@@ -649,7 +650,7 @@ static void DSI_RestoreCmdQ(void)
 
 static void _DSI_RDMA0_IRQ_Handler(unsigned int param);
 spinlock_t dsi_glitch_detect_lock;
-
+//baoqiang merge p9
 static DSI_STATUS DSI_TE_Setting(void)
 {
     //return DSI_STATUS_OK;
@@ -675,7 +676,7 @@ static DSI_STATUS DSI_TE_Setting(void)
 
     return DSI_STATUS_OK;
 }
-
+//baoqiang merge p9
 DSI_STATUS DSI_Init(BOOL isDsiPoweredOn)
 {
    DSI_STATUS ret = DSI_STATUS_OK;
@@ -972,7 +973,7 @@ static void DSI_WaitBtaTE(void)
 
     DSI_LP_Reset();
 }
-
+//baoqiang merge p9 20130617
 static void DSI_WaitExternalTE(void)
 {
     DSI_T0_INS t0;
@@ -1039,7 +1040,7 @@ static void DSI_WaitExternalTE(void)
 
     DSI_LP_Reset();
 }
-
+//baoqiang merge p9 20130617
 DSI_STATUS DSI_Start(void)
 {
     if (DSI_STATUS_OK == DSI_WaitForEngineNotBusy())
@@ -1378,7 +1379,7 @@ DSI_STATUS DSI_Wakeup(void)
     OUTREGBIT(DSI_START_REG,DSI_REG->DSI_START,SLEEPOUT_START,0);
     OUTREGBIT(DSI_START_REG,DSI_REG->DSI_START,SLEEPOUT_START,1);
     mdelay(1);
-    OUTREGBIT(DSI_START_REG,DSI_REG->DSI_START,SLEEPOUT_START,0);
+    OUTREGBIT(DSI_START_REG,DSI_REG->DSI_START,SLEEPOUT_START,0);//legen merge p20
     OUTREGBIT(DSI_MODE_CTRL_REG,DSI_REG->DSI_MODE_CTRL,SLEEP_MODE,0);
 
     return DSI_STATUS_OK;
@@ -1396,7 +1397,7 @@ DSI_STATUS DSI_Reset(void)
 
 DSI_STATUS DSI_LP_Reset(void)
 {
-#if 0
+#if 0 //zrl close it according to MTK P9 & Bug 492405,20130731
     DSI_WaitForEngineNotBusy();
     OUTREGBIT(DSI_COM_CTRL_REG,DSI_REG->DSI_COM_CTRL,DSI_RESET,1);
     OUTREGBIT(DSI_COM_CTRL_REG,DSI_REG->DSI_COM_CTRL,DSI_RESET,0);
@@ -3181,7 +3182,14 @@ UINT32 DSI_dcs_read_lcm_reg_v2(UINT8 cmd, UINT8 *buffer, UINT8 buffer_size)
          return 0;
       max_try_count--;
       recv_data_cnt = 0;
+	  
+//zrl modify for HX8379a read LCD ID begin,130824
+#ifdef JRD_CALIFORNIA_BORAD
+       read_timeout_ms = 100;	//20
+#else
       read_timeout_ms = 200; //modified by zhuqiang for PR533582 on 2013.10.10
+#endif
+//zrl modify for HX8379a read LCD ID end,130824
       
       DSI_WaitForEngineNotBusy();
       
@@ -3716,7 +3724,7 @@ DSI_STATUS DSI_TE_Enable(BOOL enable)
 
     return DSI_STATUS_OK;
 }
-
+//baoqiang merge p9 20130617
 DSI_STATUS DSI_TE_EXT_Enable(BOOL enable)
 {
 
@@ -3740,4 +3748,4 @@ BOOL DSI_Get_BTA_TE(void)
 {
     return dsiTeEnable;
 }
-
+//baoqiang merge p9 20130617

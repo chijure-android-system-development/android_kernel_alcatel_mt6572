@@ -35,6 +35,8 @@ extern LCM_DRIVER ili9488_dsi_6575_lcm_drv;
 extern LCM_DRIVER nt35510_dsi_6575_lcm_drv;
 
 /* Add by zhuqiang for PR544645. 20131025 Begin. */
+//zrl add begin, 20130807 
+extern LCM_DRIVER otm8009a_6572_dsi_cmd_lcm_drv;
 extern LCM_DRIVER ili9806c_6572_dsi_vdo_lcm_drv;
 /* Add by zhuqiang for PR544645. 20131025 End. */
 
@@ -42,6 +44,9 @@ extern LCM_DRIVER ili9806c_6572_dsi_vdo_lcm_drv;
 extern LCM_DRIVER ili9806e_dsi_6572_lcm_drv_txd;
 
 extern LCM_DRIVER otm8018b_dsi_6572_lcm_drv;
+//nqb add begin, 20131107
+extern LCM_DRIVER ili9806e_6572_dsi_vdo_lcm_drv;
+//nqb add end, 20131107
 
 extern LCM_DRIVER nt35582_lcm_drv;
 extern LCM_DRIVER s6d0170_lcm_drv;
@@ -295,6 +300,10 @@ LCM_DRIVER* lcm_driver_list[] =
 #if defined(ILI9806_6572_DSI_VDO_TXD)
 	&ili9806_dsi_6572_lcm_drv_txd,
 #endif
+
+#if defined(OTM8009A_6572_DSI_CMD)
+	&otm8009a_6572_dsi_cmd_lcm_drv,
+#endif
 /* Add by zhuqiang for PR468107. 20130611 End. */
 
 /* Add by zhuqiang for PR471583. 20130731 Begin. */
@@ -313,6 +322,12 @@ LCM_DRIVER* lcm_driver_list[] =
 	&ili9806e_dsi_6572_lcm_drv_txd,
 #endif
 
+
+//nqb add begin, 20131107
+#if defined(ILI9806E_6572_DSI_VDO)
+	&ili9806e_6572_dsi_vdo_lcm_drv,
+#endif
+//nqb add end, 20131107
 
 #if defined(OTM8018B_DSI_VDO_6572_TRUST)
 	&otm8018b_dsi_6572_lcm_drv,

@@ -8,6 +8,7 @@ merge-order   := \
     project \
     $(if $(call seq,yes,$(BUILD_DEBUG_KERNEL)),project_debug,) \
     flavor \
+    $(if $(call seq,y,$(CONFIG_JRD_PRINTD)),PRINTD,) \
     $(if $(call seq,user,$(TARGET_BUILD_VARIANT)),USER,) \
     $(if $(call seq,userdebug,$(TARGET_BUILD_VARIANT)),USER,)
 

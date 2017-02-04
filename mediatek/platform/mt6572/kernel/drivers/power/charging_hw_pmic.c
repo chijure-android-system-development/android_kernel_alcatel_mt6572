@@ -32,6 +32,8 @@
 #include <mach/upmu_hw.h>
 #include <linux/xlog.h>
 #include <linux/delay.h>
+//mingquan.lai add to define HIGH_BATTERY_VOLTAGE_SUPPORT
+#include <cust_charging.h>
 
 	 
  // ============================================================ //

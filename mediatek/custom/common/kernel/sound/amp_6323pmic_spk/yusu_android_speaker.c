@@ -20,8 +20,12 @@
 #include <asm/uaccess.h>
 #include <linux/delay.h>
 #include "yusu_android_speaker.h"
-
-#if defined(MT6575)
+//baoqiang add for extern amplifier
+#if defined(MT6572)
+#include <mach/mt_gpio.h>
+#include <mach/mt_typedefs.h>
+//baoqiang add for extern amplifier
+#elif defined(MT6575)
 #include <mach/mt_gpio.h>
 #include <mach/mt_typedefs.h>
 #include <mach/mt_clock_manager.h>
@@ -43,12 +47,21 @@
 #define PRINTK(format, args...)
 #endif
 
+/**************************************************************************
+* To use class D or class AB, need to define USING_CLASSD_AMP or AMP_CLASS_AB. but if
+* you use extern amplifier, USING_EXTAMP_HP should be defined, to define these see in the 
+* file: mediatek/custom/project_name/hal/audioflinger/audio/audio_custom_exp.h
+***************************************************************************
+*/
+//legen add: only choose one of them
+//#define AMP_CLASS_D  //use class D amplifier
 #define AMP_CLASS_AB
-//#define AMP_CLASS_D
+#define AMP_EXT  //use extern amplifier
 //#define ENABLE_2_IN_1_SPK
+//legen add end
 
 #if !defined(AMP_CLASS_AB) && !defined(AMP_CLASS_D)
-#error "MT6323 SPK AMP TYPE does not be defined!!!"
+//#error "MT6323 SPK AMP TYPE does not be defined!!!"
 #endif
 /*****************************************************************************
 *                          C O N S T A N T S
@@ -81,6 +94,11 @@ bool Speaker_Init(void)
 
 #elif defined(AMP_CLASS_D)
 
+#elif defined(AMP_EXT) //legen modify
+   mt_set_gpio_mode(GPIO_SPEAKER_EN_PIN,GPIO_MODE_00);  // gpio mode
+   mt_set_gpio_pull_enable(GPIO_SPEAKER_EN_PIN,GPIO_PULL_ENABLE);
+   mt_set_gpio_dir(GPIO_SPEAKER_EN_PIN,GPIO_DIR_OUT); // output
+   mt_set_gpio_out(GPIO_SPEAKER_EN_PIN,GPIO_OUT_ZERO); // low
 #endif
    
    PRINTK("-Speaker_Init Success");
@@ -126,6 +144,10 @@ void Sound_Speaker_Turnon(int channel)
 
 #elif defined(AMP_CLASS_D)
 
+#elif defined(AMP_EXT)
+    mt_set_gpio_dir(GPIO_SPEAKER_EN_PIN,GPIO_DIR_OUT); // output
+    mt_set_gpio_out(GPIO_SPEAKER_EN_PIN,GPIO_OUT_ONE); // high
+    msleep(SPK_WARM_UP_TIME);
 #endif
     //msleep(SPK_WARM_UP_TIME);
     gsk_on = true;
@@ -140,6 +162,9 @@ void Sound_Speaker_Turnoff(int channel)
 
 #elif defined(AMP_CLASS_D)
 
+#elif defined(AMP_EXT)
+	mt_set_gpio_dir(GPIO_SPEAKER_EN_PIN,GPIO_DIR_OUT);//output
+	mt_set_gpio_out(GPIO_SPEAKER_EN_PIN, GPIO_OUT_ZERO);//low
 #endif
 	gsk_on = false;
 }

@@ -5,6 +5,7 @@
 #include <linux/device.h>
 #include <linux/delay.h>
 #include <mach/mt_spi.h>
+#include <mach/mt_gpio.h>
 
 #include <linux/sched.h>
 #include <linux/kthread.h>
@@ -793,6 +794,13 @@ static struct spi_board_info spi_board_devs[] __initdata = {
 
 static int __init spi_dev_init(void)
 {
+	SPIDEV_LOG("SPI GPIO setting");
+	/* TODO: avoid hard-coding */
+	mt_set_gpio_mode(GPIO97, GPIO_MODE_01);
+	mt_set_gpio_mode(GPIO98, GPIO_MODE_01);
+	mt_set_gpio_mode(GPIO99, GPIO_MODE_01);
+	mt_set_gpio_mode(GPIO100, GPIO_MODE_01);
+
 	SPIDEV_LOG("SPI_DEV_INIT.\n");
 	spi_register_board_info(spi_board_devs, ARRAY_SIZE(spi_board_devs));
 	return spi_register_driver(&spi_test_driver);

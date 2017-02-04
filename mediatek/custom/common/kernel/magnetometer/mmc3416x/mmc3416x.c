@@ -34,7 +34,7 @@
 #include <linux/time.h>
 #include <linux/hrtimer.h>
 
-#include <mach/mt_devs.h>
+//#include <mach/mt_devs.h>
 #include <mach/mt_typedefs.h>
 #include <mach/mt_gpio.h>
 #include <mach/mt_pm_ldo.h>
@@ -522,7 +522,7 @@ if (!(read_idx % MMC3416X_RESET_INTV))
 	vec[0] = data[1] << 8 | data[0];
 	vec[1] = data[3] << 8 | data[2];
 	vec[2] = data[5] << 8 | data[4];
-	vec[2] = 65536 - vec[2];
+
 #if DEBUG
 	if(atomic_read(&clientdata->trace) & MMC_DATA_DEBUG)
 	{
@@ -899,7 +899,7 @@ static int mmc3416x_release(struct inode *inode, struct file *file)
 			vec[0] = data[1] << 8 | data[0];
 			vec[1] = data[3] << 8 | data[2];
 			vec[2] = data[5] << 8 | data[4];
-			vec[2] = 65536 - vec[2];
+		
 
 		#if DEBUG
 			if(atomic_read(&clientdata->trace) & MMC_DATA_DEBUG)
@@ -1421,46 +1421,46 @@ static int mmc3416x_i2c_probe(struct i2c_client *client, const struct i2c_device
 #if 1
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = MMC3416X_CTRL_REFILL;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(MMC3416X_DELAY_SET);
 
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = MMC3416X_CTRL_SET;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(1);
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = 0;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(MMC3416X_DELAY_SET);
 
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = MMC3416X_CTRL_REFILL;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(MMC3416X_DELAY_RST);
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = MMC3416X_CTRL_RESET;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(1);
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = 0;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(1);
 
 	tmp[0] = MMC3416X_REG_BITS;
 	tmp[1] = MMC3416X_BITS_SLOW_16;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(MMC3416X_DELAY_TM);
 
 	tmp[0] = MMC3416X_REG_CTRL;
 	tmp[1] = MMC3416X_CTRL_TM;
-	if (I2C_TxData(data, 2) < 0) {
+	if (I2C_TxData(tmp, 2) < 0) {
 	}
 	msleep(MMC3416X_DELAY_TM);
 

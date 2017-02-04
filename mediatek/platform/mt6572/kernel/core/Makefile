@@ -6,7 +6,11 @@ ifeq ($(MTK_USE_RESERVED_EXT_MEM), yes)
 KBUILD_CFLAGS += -DMTK_USE_RESERVED_EXT_MEM
 endif
 endif
-
+#add by jch for project board detect
+ifeq ($(strip $(JRD_CALIFORNIA_BORAD)),yes)
+KBUILD_CFLAGS += -DCONFIG_CALIFORNIA_BORAD
+endif
+#end add
 obj-y := core.o irq.o system.o timer.o clock.o mt_dbg.o
 obj-y += mt_devs.o mt_gpt.o mt_boot.o board.o mt_pm_init.o mt_fixup.o
 obj-y += ca7_timer.o

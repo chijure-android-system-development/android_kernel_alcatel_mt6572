@@ -112,3 +112,4 @@ CONFIG_CMDLINE="console=ttyMT3,921600n1 vmalloc=500M slub_max_order=0"
 # CONFIG_DEBUG_LOCKDEP is not set
 # CONFIG_MTK_MET is not set
 # CONFIG_MTK_MET_PLF is not set
+# CONFIG_MTK_FB_SUPPORT_ASSERTION_LAYER is not set

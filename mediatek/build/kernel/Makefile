@@ -29,6 +29,7 @@ drivers-y       += $(MTK_PATH_SOURCE)/
 drivers-y       += $(MTK_PATH_CUSTOM)/
 endif
 
+LINUXINCLUDE    += -I$(MTK_ROOT_CUSTOM)/$(MTK_PROJECT)/common/
 LINUXINCLUDE    += -I$(MTK_PATH_PLATFORM)/core/include/
 LINUXINCLUDE    += -I$(MTK_PATH_SOURCE)/include/
 KBUILD_CFLAGS   += $(call mtk.custom.generate-macros)
