@@ -611,6 +611,12 @@ static void __call_console_drivers(unsigned start, unsigned end)
 				(cpu_online(smp_processor_id()) ||
 				(con->flags & CON_ANYTIME)))
 			con->write(con, &LOG_BUF(start), end - start);
+
+#ifdef CONFIG_JRD_PRINTD
+		extern void printd_dump(char *, int);
+		printd_dump(&LOG_BUF(start), end - start);
+#endif
+
 	}
 }
 

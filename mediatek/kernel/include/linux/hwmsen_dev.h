@@ -18,9 +18,7 @@
 
 #define GRAVITY_EARTH_1000           9807	// about (9.80665f)*1000
 
-#if defined (HZ_SOUL4_SUPPORT) || defined (HZ_SOUL45_SUPPORT) || defined (HZ_YARISS_SUPPORT)
 #define SYS_COMPATIBLE
-#endif
 
 struct hwmsen_object {
     void *self;
@@ -50,10 +48,9 @@ extern int hwmsen_gsensor_add(struct sensor_init_info* obj) ;
 #if defined(MTK_AUTO_DETECT_MAGNETOMETER)
 extern int hwmsen_msensor_add(struct sensor_init_info* obj);
 #endif
-
-
-#ifdef SYS_COMPATIBLE
 extern struct device *hwmsen_get_compatible_dev();//add by llf 2013.10.24
+#if defined(MTK_AUTO_DETECT_ALSPS)//added by zhengdao
+extern int hwmsen_alsps_add(struct sensor_init_info* obj) ;
 #endif
 /*----------------------------------------------------------------------------*/
 #endif 

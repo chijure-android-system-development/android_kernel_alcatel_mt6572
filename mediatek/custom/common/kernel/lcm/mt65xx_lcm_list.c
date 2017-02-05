@@ -39,6 +39,7 @@ extern LCM_DRIVER nt35510_dsi_6575_lcm_drv;
 extern LCM_DRIVER otm8009a_6572_dsi_cmd_lcm_drv;
 extern LCM_DRIVER ili9806c_6572_dsi_vdo_lcm_drv;
 /* Add by zhuqiang for PR544645. 20131025 End. */
+extern LCM_DRIVER hx8379a_6572_dsi_vdo_lcm_drv;
 
 
 extern LCM_DRIVER ili9806e_dsi_6572_lcm_drv_txd;
@@ -322,6 +323,9 @@ LCM_DRIVER* lcm_driver_list[] =
 	&ili9806e_dsi_6572_lcm_drv_txd,
 #endif
 
+#if defined(HX8379A_6572_DSI_VDO)
+	&hx8379a_6572_dsi_vdo_lcm_drv,
+#endif
 
 //nqb add begin, 20131107
 #if defined(ILI9806E_6572_DSI_VDO)

@@ -14,3 +14,4 @@
 #include "out/target/product/yariss/obj/include/dfo/CFG_Dfo_File.h"
 #include "out/target/product/jrdhz72_we_jb3/obj/include/dfo/CFG_Dfo_File.h"
 #include "out/target/product/california/obj/include/dfo/CFG_Dfo_File.h"
+#include "out/target/product/yarisl/obj/include/dfo/CFG_Dfo_File.h"

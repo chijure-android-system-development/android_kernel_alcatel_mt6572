@@ -40,6 +40,7 @@
 #include <linux/syscore_ops.h>
 #include <linux/version.h>
 #include <linux/ctype.h>
+#include <linux/delay.h>
 
 #include <linux/compat.h>
 #include <linux/syscalls.h>
@@ -491,6 +492,8 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 		break;
 
 	case LINUX_REBOOT_CMD_RESTART2:
+		printk("==============================here delay 0.5 s=======================================\r\n");
+		mdelay(500);
 		if (strncpy_from_user(&buffer[0], arg, sizeof(buffer) - 1) < 0) {
 			ret = -EFAULT;
 			break;

@@ -395,7 +395,7 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 	ws->active_count++;
 	ws->last_time = ktime_get();
 	if (ws->autosleep_enabled) {
-		//pr_info("[%s]:ws activate->\t%s\n", _TAG, ws->name); change by yinzhanyong for FR640246
+		pr_info("[%s]:ws activate->\t%s\n", _TAG, ws->name);
 		ws->start_prevent_time = ws->last_time;
 	}
 
@@ -547,7 +547,7 @@ static void wakeup_source_deactivate(struct wakeup_source *ws)
 
 	if (ws->autosleep_enabled) {
 		update_prevent_sleep_time(ws, now);
-		//printk("[%s]:ws deactivate->\t%s\n", _TAG, ws->name); change by yinzhanyong for FR640246
+		printk("[%s]:ws deactivate->\t%s\n", _TAG, ws->name);
 	}
 
 	/*

@@ -137,6 +137,7 @@ void aee_oops_free(struct aee_oops *oops);
 #define DB_OPT_BINDER_INFO              (1<<18)
 #define DB_OPT_WCN_ISSUE_INFO           (1<<19)
 #define DB_OPT_DUMMY_DUMP               (1<<20)
+#define DB_OPT_VM_OOME_HPROF            (1<<21)
 
 #define aee_kernel_exception(module, msg...)	\
 	aee_kernel_exception_api(__FILE__, __LINE__, DB_OPT_DEFAULT, module, msg)

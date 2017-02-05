@@ -1,4 +1,72 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("MediaTek Software") are
+ * protected under relevant copyright laws. The information contained herein
+ * is confidential and proprietary to MediaTek Inc. and/or its licensors.
+ * Without the prior written permission of MediaTek inc. and/or its licensors,
+ * any reproduction, modification, use or disclosure of MediaTek Software,
+ * and information contained herein, in whole or in part, shall be strictly prohibited.
+ */
+/* MediaTek Inc. (C) 2010. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+ * RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER ON
+ * AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+ * NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+ * SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+ * SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES TO LOOK ONLY TO SUCH
+ * THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. RECEIVER EXPRESSLY ACKNOWLEDGES
+ * THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES
+ * CONTAINED IN MEDIATEK SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK
+ * SOFTWARE RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND
+ * CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+ * AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+ * OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY RECEIVER TO
+ * MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+ *
+ * The following software/firmware and/or related documentation ("MediaTek Software")
+ * have been modified by MediaTek Inc. All revisions are subject to any receiver's
+ * applicable license agreements with MediaTek Inc.
+ */
 
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2008
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
 #if defined(BUILD_LK)
 #include <string.h>
 #else
@@ -23,7 +91,7 @@
 #define FRAME_WIDTH  										(480)
 #define FRAME_HEIGHT 										(854)
 
-#define REGFLAG_DELAY             							0XAB
+#define REGFLAG_DELAY             							0xAB
 #define REGFLAG_END_OF_TABLE      							0xAA   // END OF REGISTERS MARKER
 
 #define LCM_DSI_CMD_MODE									0
@@ -58,6 +126,9 @@ bool lcm_vendor=LCM_BYD;	//default to choose byd panel
 //LCD_TDT_450_ILI9806C_HSD			//YarisL					480*854		HSD		0				Proto 01
 /*--------------------------LCD module explaination end----------------------------------------*/
 
+//#define LCD_BYD_450_ILI9806C_HSD_ORIGIN		//the original parm
+#define LCD_BYD_450_ILI9806C_HSD_0913		//to resolve the flick issue of 2 dot inversion
+
 
 // ---------------------------------------------------------------------------
 //  Local Variables
@@ -88,6 +159,7 @@ struct LCM_setting_table {
     unsigned char para_list[64];
 };
 
+#if defined(LCD_BYD_450_ILI9806C_HSD_ORIGIN)
 static struct LCM_setting_table lcm_byd_initialization_setting[] = {
 
 	{0xFF,	3,	{0xFF, 0x98, 0x16}},
@@ -117,13 +189,13 @@ static struct LCM_setting_table lcm_byd_initialization_setting[] = {
 	{0xFC,	1,	{0x07}},     
 	{0xE0,	16,	{0x00,0x04,0x12,0x11,0x13,0x1E,0xc8,0x08,0x02,0x09,0x03,0x0C,0x0C,0x2D,0x2A,0x00}},
 
-	{0xE1,	16,	{0x00,0x02,0x07,0x0D,0x11,0x16,0X7A,0x09,0x05,0x09,0x06,0x0C,0x0B,0x2F,0x2A,0x00}},
+	{0xE1,	16,	{0x00,0x02,0x07,0x0D,0x11,0x16,0x7A,0x09,0x05,0x09,0x06,0x0C,0x0B,0x2F,0x2A,0x00}},
 
-	{0xD5,	8,	{0x0D,0x08,0x08,0x09,0xCB,0XA5,0x01,0x04}},   
+	{0xD5,	8,	{0x0D,0x08,0x08,0x09,0xCB,0xA5,0x01,0x04}},   
 
 	{0xF7,	1,	{0x89}},    
 
-	{0xC7,	1,	{0x7F}},    
+	{0xC7,	1,	{0x7F}},
 
 	{0x11,	1,	{0x00}},
 	{REGFLAG_DELAY, 120, {}},
@@ -137,6 +209,114 @@ static struct LCM_setting_table lcm_byd_initialization_setting[] = {
 	{REGFLAG_END_OF_TABLE, 0x00, {}}  
 
 };
+
+#elif defined(LCD_BYD_450_ILI9806C_HSD_0913)
+static struct LCM_setting_table lcm_byd_initialization_setting[] = {
+
+	{0xFF,	3,	{0xFF, 0x98, 0x16}},
+
+	{0xBA,	1,	{0x60}},
+
+	{0xB0,	1,	{0x01}},
+
+	{0xBC,	18,	{0x03,0x0D,0x03,0x63,0x01,0x01,0x1b,0x11,0x6E,0x00,0x00,0x00,0x01,0x01,0x16,0x00,0xff,0xf2}},
+
+	{0xBD,	8,	{0x02,0x13,0x45,0x67,0x45,0x67,0x01,0x23}},
+
+	{0xBE,	17,	{0x03,0x22,0x22,0x22,0x22,0xdd,0xcc,0xbb,0xaa,0x66,0x77,0x22,0x22,0x22,0x22,0x22,0x22}},
+
+	{0xED,	2,	{0x7F, 0x0F}},
+
+	{0xF3,	1,	{0x70}},
+
+	{0xB4,	1,	{0x02}},
+
+	{0xC0,	3,	{0x0F, 0x0B, 0x0A}},
+
+	{0xC1,	4,	{0x17,0x88,0x70,0x20}},
+
+	{0xD8,	1,	{0x50}},
+
+	{0xFC,	1,	{0x07}},     
+	{0xE0,	16,	{0x00,0x04,0x12,0x11,0x13,0x1E,0xc8,0x08,0x02,0x09,0x03,0x0C,0x0C,0x2D,0x2A,0x00}},
+
+	{0xE1,	16,	{0x00,0x02,0x07,0x0D,0x11,0x16,0x7A,0x09,0x05,0x09,0x06,0x0C,0x0B,0x2F,0x2A,0x00}},
+
+	{0xD5,	8,	{0x0D,0x08,0x08,0x09,0xCB,0xA5,0x01,0x04}},   
+
+	{0xF7,	1,	{0x89}},    
+
+	{0xC7,	1,	{0x78}},
+
+	{0x11,	1,	{0x00}},
+	{REGFLAG_DELAY, 120, {}},
+
+	{0xEE, 9,{0x0A,0x1B,0x5F,0x40,0x00,0x00,0x10,0x00,0x58}},//for esd protect, no need to check sync
+	{0xD6, 8,{0xFF,0xA0,0x88,0x14,0x04,0x64,0x28,0x1A}},
+
+	{0x29,	1,	{0x00}},
+	{REGFLAG_DELAY, 50, {}},
+
+	{REGFLAG_END_OF_TABLE, 0x00, {}}  
+
+};
+
+#endif
+
+static struct LCM_setting_table lcm_byd_initialization_debug1[] = {
+
+	{0xFF,	3,	{0xFF, 0x98, 0x16}},
+
+	{0xBA,	1,	{0x60}},
+
+	{0xB0,	1,	{0x01}},
+
+	{0xBC,	18,	{0x03,0x0D,0x03,0x63,0x01,0x01,0x1b,0x11,0x6E,0x00,0x00,0x00,0x01,0x01,0x16,0x00,0xff,0xf2}},
+
+	{0xBD,	8,	{0x02,0x13,0x45,0x67,0x45,0x67,0x01,0x23}},
+
+	{0xBE,	17,	{0x03,0x22,0x22,0x22,0x22,0xdd,0xcc,0xbb,0xaa,0x66,0x77,0x22,0x22,0x22,0x22,0x22,0x22}},
+
+	{0xED,	2,	{0x7F, 0x0F}},
+
+	{0xF3,	1,	{0x70}},
+
+	{0xB4,	1,	{0x02}},
+
+	{0xC0,	3,	{0x0F, 0x0B, 0x0A}},
+
+	{0xC1,	4,	{0x17,0x88,0x70,0x20}},
+
+	{0xD8,	1,	{0x50}},
+
+	{0xFC,	1,	{0x07}},     
+	{0xE0,	16,	{0x00,0x04,0x12,0x11,0x13,0x1E,0xc8,0x08,0x02,0x09,0x03,0x0C,0x0C,0x2D,0x2A,0x00}},
+
+	{0xE1,	16,	{0x00,0x02,0x07,0x0D,0x11,0x16,0x7A,0x09,0x05,0x09,0x06,0x0C,0x0B,0x2F,0x2A,0x00}},
+
+	{0xD5,	8,	{0x0D,0x08,0x08,0x09,0xCB,0xA5,0x01,0x04}},   
+
+	{0xF7,	1,	{0x89}},    
+
+	{REGFLAG_END_OF_TABLE, 0x00, {}}  
+
+};
+
+static struct LCM_setting_table lcm_byd_initialization_debug2[] = {
+
+	{0x11,	1,	{0x00}},
+	{REGFLAG_DELAY, 120, {}},
+
+	{0xEE, 9,{0x0A,0x1B,0x5F,0x40,0x00,0x00,0x10,0x00,0x58}},//for esd protect, no need to check sync
+	{0xD6, 8,{0xFF,0xA0,0x88,0x14,0x04,0x64,0x28,0x1A}},
+
+	{0x29,	1,	{0x00}},
+	{REGFLAG_DELAY, 50, {}},
+
+	{REGFLAG_END_OF_TABLE, 0x00, {}}  
+
+};
+
 
 static struct LCM_setting_table lcm_tdt_initialization_setting[] = {
 
@@ -206,9 +386,11 @@ static struct LCM_setting_table lcm_set_window[] = {
 };
 #endif
 
+
 static struct LCM_setting_table lcm_sleep_out_setting[] = {
 	// Sleep Out
 	{0x11, 1, {0x00}},
+    {REGFLAG_DELAY, 150, {}},
 
 	// Display ON
 	{0x29, 1, {0x00}},
@@ -218,6 +400,25 @@ static struct LCM_setting_table lcm_sleep_out_setting[] = {
 
 	{REGFLAG_END_OF_TABLE, 0x00, {}}
 };
+
+/*
+static struct LCM_setting_table lcm_sleep_out_setting[] = {
+    // Sleep Out	
+	{0x11, 1, {0x00}},
+	{0x29, 1, {0x00}},
+
+	{0x11, 1, {0x00}},
+	{REGFLAG_DELAY, 150, {}},
+
+	// Display ON
+	{0x29, 1, {0x00}},
+	{REGFLAG_DELAY, 50, {}},
+
+	{0x2C, 1, {0x00}},
+
+	{REGFLAG_END_OF_TABLE, 0x00, {}}
+};
+*/
 
 
 static struct LCM_setting_table lcm_deep_sleep_mode_in_setting[] = {
@@ -329,15 +530,22 @@ static void lcm_get_params(LCM_PARAMS *params)
 		//	params->dsi.line_byte=2180;		
 		// add by zhuqiang for FR437058 at 2013.4.25 begin
 		params->dsi.horizontal_sync_active=10;  
-		params->dsi.horizontal_backporch=80;      
-		params->dsi.horizontal_frontporch=80;    
+		
+//zrl modify for improve the TP reort point begin,130916
+		params->dsi.horizontal_backporch=50;      
+		params->dsi.horizontal_frontporch=50;  
+//zrl modify for improve the TP reort point end,130916
+		  
 		// add by zhuqiang for FR437058 at 2013.4.25 end
 		params->dsi.horizontal_active_pixel = FRAME_WIDTH;	//added by zhuqiang 2013.3.4 
 		
 		// add by zhuqiang for FR437058 at 2013.4.25 begin
 		params->dsi.pll_div1=0;         //  div1=0,1,2,3;  div1_real=1,2,4,4
 		params->dsi.pll_div2=2;         // div2=0,1,2,3;div2_real=1,2,4,4
-		params->dsi.fbk_div =30;              // fref=26MHz,  fvco=fref*(fbk_div+1)*2/(div1_real*div2_real)
+		
+//zrl modify for improve the TP reort point begin,130916
+        params->dsi.fbk_div =32;              // fref=26MHz,  fvco=fref*(fbk_div+1)*2/(div1_real*div2_real)
+//zrl modify for improve the TP reort point end,130916
 
 		// add by zhuqiang for FR437058 at 2013.4.25 end
 }
@@ -393,10 +601,10 @@ static void lcm_init(void)
     SET_RESET_PIN(1);
     MDELAY(120);
 
-    if(lcm_vendor == LCM_TDT)
-		push_table(lcm_tdt_initialization_setting, sizeof(lcm_tdt_initialization_setting) / sizeof(struct LCM_setting_table), 1);
-    else
+    if(lcm_vendor == LCM_BYD)
 		push_table(lcm_byd_initialization_setting, sizeof(lcm_byd_initialization_setting) / sizeof(struct LCM_setting_table), 1);
+    else
+		push_table(lcm_tdt_initialization_setting, sizeof(lcm_tdt_initialization_setting) / sizeof(struct LCM_setting_table), 1);
 
     //push_table(lcm_initialization_setting, sizeof(lcm_initialization_setting) / sizeof(struct LCM_setting_table), 1);
 
@@ -409,14 +617,46 @@ static void lcm_suspend(void)
 }
 
 
+#if 0
+
+static void lcm_resume(void)
+{
+	static int temp = 0x46;
+	unsigned int data_array[16];
+
+	//zrl add for debug for Cut  screen, 121015
+	push_table(lcm_byd_initialization_debug1, sizeof(lcm_byd_initialization_debug1) / sizeof(struct LCM_setting_table), 1);
+
+	data_array[0]= 0x00023902;
+	data_array[1]= 0x00|0x00|(temp<<8)|0xC7;
+	dsi_set_cmdq(&data_array, 2, 1);
+
+	push_table(lcm_byd_initialization_debug2, sizeof(lcm_byd_initialization_debug2) / sizeof(struct LCM_setting_table), 1);
+
+#if defined(BUILD_LK)
+	printf("zrl lcm_resume,temp = 0x%x,data_array[1] = 0x%x\n",temp,data_array[1]);
+#else
+	printk("zrl lcm_resume,temp = 0x%x,data_array[1] = 0x%x\n",temp,data_array[1]);
+#endif
+
+	//x1=temp%256;
+	//x2=temp/256;
+	temp+=2;
+
+}
+
+#else
+
 static void lcm_resume(void)
 {
 
-	lcm_init();  
+	//lcm_init();  
 	//MDELAY(200);
 
-	//push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
+	push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
 }
+
+#endif
 
 
 static void lcm_update(unsigned int x, unsigned int y,

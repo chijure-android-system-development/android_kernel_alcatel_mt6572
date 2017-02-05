@@ -26,7 +26,6 @@ struct alsps_hw *get_cust_alsps_hw(void) {
 #if 1
 int TMD2771_CMM_PPCOUNT_VALUE = 0x07; 
 
-int ZOOM_TIME = 10;
 int TMD2771_CMM_CONTROL_VALUE = (0x20 | 0x40);
 int TMD2771_OFFSET_VALUE = 0x00;
 #endif

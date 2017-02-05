@@ -122,7 +122,7 @@ void __ptrace_unlink(struct task_struct *child)
 	spin_unlock(&child->sighand->siglock);
 }
 
-//Added by bin.wei.hz for security patch in RR488239 begin
+//Added by luo.jun@tcl.com for security patch in RR489591 begin
 /* Ensure that nothing can wake it up, even SIGKILL */ 
 static bool ptrace_freeze_traced(struct task_struct *task) 
 {
@@ -152,7 +152,7 @@ static void ptrace_unfreeze_traced(struct task_struct *task)
 				task->state = TASK_TRACED;
 		 spin_unlock_irq(&task->sighand->siglock); 
 }	 
-//Added by bin.wei.hz for security patch in RR488239 end
+//Added by luo.jun@tcl.com for security patch in RR489591 end
 
 /**
  * ptrace_check_attach - check whether ptracee is ready for ptrace operation
@@ -183,7 +183,7 @@ int ptrace_check_attach(struct task_struct *child, bool ignore_state)
 	 * be changed by us so it's not changing right after this.
 	 */
 	read_lock(&tasklist_lock);
-	//Modified by bin.wei.hz for security patch in RR488239 begin
+	//Modified by luo.jun@tcl.com for security patch in RR489591
 	//if ((child->ptrace & PT_PTRACED) && child->parent == current) {
 	if (child->ptrace && child->parent == current) {
 		WARN_ON(child->state == __TASK_TRACED);
@@ -938,7 +938,10 @@ SYSCALL_DEFINE4(ptrace, long, request, long, pid, unsigned long, addr,
 		goto out_put_task_struct;
 
 	ret = arch_ptrace(child, request, addr, data);
+	if (ret || request != PTRACE_DETACH)
+		ptrace_unfreeze_traced(child);
 
+	//Modified by luo.jun@tcl.com for security patch in RR489591
 	if (ret || request != PTRACE_DETACH)
 			ptrace_unfreeze_traced(child);
 
@@ -1080,6 +1083,7 @@ asmlinkage long compat_sys_ptrace(compat_long_t request, compat_long_t pid,
 
 	ret = ptrace_check_attach(child, request == PTRACE_KILL ||
 				  request == PTRACE_INTERRUPT);
+	//Modified by luo.jun@tcl.com for security patch in RR489591
 	if (!ret) {
 		ret = compat_arch_ptrace(child, request, addr, data);
 		if (ret || request != PTRACE_DETACH)
