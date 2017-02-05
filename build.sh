@@ -16,7 +16,7 @@
  #
 toolchain=~/arm-cortex-linux-gnueabi-linaro_5.2-2015.11-2/bin
 kernel="Phoenix"
-variant="v1"
+variant="v2"
 toolchain2="arm-eabi-"
 jobcount="-j$(grep -c ^processor /proc/cpuinfo)"
 kerneltype="zImage"
