@@ -20,7 +20,6 @@ variant="v1"
 toolchain2="arm-eabi-"
 jobcount="-j$(grep -c ^processor /proc/cpuinfo)"
 kerneltype="zImage"
-codename="yariss"
 KERNEL_DIR=$PWD
 ZIMAGE=$KERNEL_DIR/kernel/arch/arm/boot/zImage
 BUILD_START=$(date +"%s")
@@ -32,6 +31,24 @@ nocol='\033[0m'
 # Modify the following variable if you want to build
 export CROSS_COMPILE=$toolchain/"$toolchain2"
 
+if [ -z $target ]; then
+echo "choose your target device"
+echo "1) Alcatel-POP-C1"
+echo "2) Alcatel-POP-C2"
+echo "3) Alcatel-POP-C3"
+echo "4) Alcatel-POP-C5"
+echo "5) Alcatel-Idol Mini"
+read -p "1/2/3/4/5: " choice
+case "$choice" in
+1 ) export codename=4015 ; export TARGET_PRODUCT=yariss;;
+2 ) export codename=4032 ; export TARGET_PRODUCT=jrdhz72_we_jb3;;
+3 ) export codename=4033 ; export TARGET_PRODUCT=jrdhz72_we_jb3;;
+4 ) export codename=5036 ; export TARGET_PRODUCT=yarisl;;
+5 ) export codename=6012 ; export TARGET_PRODUCT=california;;
+* ) echo "invalid choice"; sleep 2 ; $0;;
+esac
+fi # [ -z $target ]
+
 compile_kernel ()
 {
 echo -e "$blue***********************************************"
@@ -40,7 +57,7 @@ echo -e "***********************************************$nocol"
 export KBUILD_BUILD_USER="chijure"
 export KBUILD_BUILD_HOST="team-Panther"
 cd kernel
-export TARGET_PRODUCT=$codename MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
+export MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
 make $jobcount
 $KERNEL_DIR/mediatek/build/tools/mkimage $KERNEL_DIR/kernel/arch/arm/boot/zImage KERNEL > $KERNEL_DIR/kernel/zip-creator/tools/zImage
 if ! [ -a $ZIMAGE ];
@@ -75,7 +92,7 @@ fi # [ -f arch/arm/boot/"$kerneltype" ]
 
 case $1 in
 clean)
-export TARGET_PRODUCT=$codename MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
+export MTK_ROOT_CUSTOM=../mediatek/custom/ MTK_PATH_PLATFORM=../mediatek/platform/mt6572/kernel/ MTK_PATH_SOURCE=../mediatek/kernel/
 cd kernel
 make $jobcount clean mrproper
 cd ..
